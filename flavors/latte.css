@@ -58,7 +58,7 @@
      map them for contrast. Latte has a light bar, light popups and one-step-darker text,
      because its dim grays are too faint on a light background. */
   /* Surfaces */
-  --bar-rgb: var(--mantle-rgb);
+  --bar-rgb: var(--crust-rgb);
   --pill-bg: var(--base);
   --popup: var(--base);
   --popup-rgb: var(--base-rgb);

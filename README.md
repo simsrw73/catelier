@@ -2,7 +2,7 @@
 
 A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows, built on the [Catppuccin](https://catppuccin.com/) palettes and made for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager.
 
-It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and needs no fonts beyond the one YASB installs for you.
+It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and optional translucency.
 
 This is not an official Catppuccin port.
 

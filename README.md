@@ -4,7 +4,7 @@ A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on W
 
 This is not an official Catppuccin port.
 
-<!-- Screenshot: take one with YASB's built-in tool (right-click the bar → Take Screenshot) and save it as images/catelier.png -->
+![The Catelier bar: launcher and window manager pills on the left, the clock in the center, and media, metrics, controls, status and power pills on the right](images/catelier.png)
 
 ## Design
 

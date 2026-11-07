@@ -23,6 +23,10 @@
     Catppuccin accent color used for focus and selection. The default is the
     flavor's own: lavender in the dark flavors, mauve in Latte.
 
+.PARAMETER Translucency
+    How much of the desktop shows through the bar: off (the default), subtle,
+    medium or strong. Needs Windows "Transparency effects" turned on.
+
 .PARAMETER StylesOnly
     Install styles.css and the flavors folder only, and keep your current config.yaml.
 #>
@@ -34,6 +38,9 @@ param(
     [ValidateSet('default', 'rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
         'yellow', 'green', 'teal', 'sky', 'sapphire', 'blue', 'lavender')]
     [string]$Accent = 'default',
+
+    [ValidateSet('off', 'subtle', 'medium', 'strong')]
+    [string]$Translucency = 'off',
 
     [switch]$StylesOnly
 )
@@ -90,6 +97,9 @@ $styles = $styles -replace '@import "flavors/[a-z]+\.css";', "@import `"flavors/
 $accentVar = if ($Accent -eq 'default') { 'flavor-accent' } else { $Accent }
 $styles = $styles -replace '--accent: var\(--[a-z-]+\);', "--accent: var(--$accentVar);"
 $styles = $styles -replace '--accent-rgb: var\(--[a-z-]+\);', "--accent-rgb: var(--$accentVar-rgb);"
+$glass = @{ off = '1', '1'; subtle = '0.6', '0.8'; medium = '0.4', '0.7'; strong = '0.2', '0.6' }[$Translucency]
+$styles = $styles -replace '--bar-glass: [0-9.]+;', "--bar-glass: $($glass[0]);"
+$styles = $styles -replace '--pill-glass: [0-9.]+;', "--pill-glass: $($glass[1]);"
 Write-ThemeFile 'styles.css' $styles
 
 # config.yaml: a few popup borders and labels are colors in the config, written in
@@ -120,5 +130,6 @@ if (-not $StylesOnly) {
 
 Write-Host ''
 $accentName = if ($Accent -eq 'default') { "its default" } else { "a $Accent" }
-Write-Host "Done: Catppuccin $Flavor with $accentName accent."
+$glassName = if ($Translucency -eq 'off') { 'a solid bar' } else { "$Translucency translucency" }
+Write-Host "Done: Catppuccin $Flavor with $accentName accent and $glassName."
 Write-Host 'YASB reloads on its own if watch_config is on; otherwise restart it.'

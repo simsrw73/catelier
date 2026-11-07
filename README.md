@@ -35,16 +35,17 @@ Run this in PowerShell to install the default, Mocha with a lavender accent:
 irm https://raw.githubusercontent.com/simsrw73/catelier/main/install.ps1 | iex
 ```
 
-To choose a flavor and accent, pass `-Flavor` and `-Accent`:
+To choose a flavor, accent or translucency, pass `-Flavor`, `-Accent` or `-Translucency`:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/simsrw73/catelier/main/install.ps1))) -Flavor macchiato -Accent mauve
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/simsrw73/catelier/main/install.ps1))) -Flavor macchiato -Accent mauve -Translucency medium
 ```
 
 - `-Flavor`: `latte`, `frappe`, `macchiato` or `mocha` (default)
 - `-Accent`: any of the 14 Catppuccin accents: `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue` or `lavender`. Without it you get the flavor's default: lavender, or mauve in Latte, where lavender is too pale to read.
+- `-Translucency`: `off` (default), `subtle`, `medium` or `strong`. How much of the blurred desktop shows through the bar. See [Translucency](#translucency).
 
-The script copies `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up your existing `config.yaml` and `styles.css` first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`. Run it again any time to switch flavor or accent.
+The script copies `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up your existing `config.yaml` and `styles.css` first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`. Run it again any time to switch flavor, accent or translucency.
 
 To keep your own `config.yaml` and only take the styles, clone the repository and run:
 
@@ -65,6 +66,21 @@ The installer does this for you. To do it yourself:
 1. In `styles.css`, change the file name in `@import "flavors/mocha.css";` to `latte.css`, `frappe.css` or `macchiato.css`.
 2. In `config.yaml`, a few popup colors are written as Mocha hex values. Replace each with the same color from your flavor's file in `flavors/`: `#313244` is `surface0`, `#9399b2` is `overlay2` (use `subtext0` in Latte) and `#fab387` is `peach`. For Latte, also change every `dark_mode: true` to `dark_mode: false`.
 3. For a different accent, change both `--accent` lines near the top of `styles.css`, for example to `var(--blue)` and `var(--blue-rgb)`. `var(--flavor-accent)` and `var(--flavor-accent-rgb)` give the flavor's default.
+
+### Translucency
+
+With translucency on, the blurred desktop shows through the bar. The pills keep more of their color than the bar, so the text on them stays readable over a bright wallpaper. Popups stay nearly solid.
+
+The installer's `-Translucency` option sets two numbers near the top of `styles.css`. To set them yourself:
+
+| Level | `--bar-glass` | `--pill-glass` |
+| --- | --- | --- |
+| Off (default) | 1 | 1 |
+| Subtle | 0.6 | 0.8 |
+| Medium | 0.4 | 0.7 |
+| Strong | 0.2 | 0.6 |
+
+It needs **Transparency effects** turned on in Windows **Settings → Personalization → Colors**, and `blur_effect` enabled for the bar in `config.yaml`, as it is in Catelier's config. Without the blur, the desktop shows through sharp, which makes the bar harder to read.
 
 ### Fonts
 

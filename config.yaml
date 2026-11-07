@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/amnweb/yasb/main/schema.json
 #
-# Catelier — a Catppuccin Mocha theme for YASB and komorebi.
+# Catelier — a Catppuccin theme for YASB and komorebi.
 # https://github.com/simsrw73/catelier
 # Floating top bar. Full bar on the primary monitor, slim bar on the others.
 # Widgets are grouped into grouper "pills"; see styles.css for the visual system.
@@ -114,7 +114,7 @@ widgets:
     type: "yasb.grouper.GrouperWidget"
     options:
       class_name: "metrics-pill"
-      widgets: ["memory", "cpu", "gpu", "disk", "traffic"]
+      widgets: ["memory", "cpu", "gpu", "disk", "ssd_health", "traffic"]
       collapse_options:
         enabled: false
 
@@ -437,6 +437,40 @@ widgets:
         on_left: "toggle_group"
         on_middle: "do_nothing"
         on_right: "exec explorer C:\\"
+
+  # Drive health and temperature from LibreHardwareMonitor's web server. The sensor
+  # IDs below are placeholders; see "Drive health" in the README to find yours.
+  ssd_health:
+    type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
+    options:
+      class_name: "ssd-health-widget"
+      label: "<span>󰗶</span>{info[value]}{info[unit]}"
+      label_alt: "<span>󰗶</span>{info[value]}{info[unit]}"
+      sensor_id: "/nvme/0/level/20"
+      precision: 0
+      update_interval: 60000
+      history_size: 1
+      connection_error_label: "<span>󰗶</span>--"
+      libre_menu:
+        header_label: "Drives"
+        precision: 0
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "#313244"
+        alignment: "right"
+        direction: "down"
+        sensors:
+          - { id: "/nvme/0/data/32", name: "<span style='font-size:11px; color:#9399b2'>C:  System drive</span>" }
+          - { id: "/nvme/0/level/20", name: "    Health" }
+          - { id: "/nvme/0/temperature/0", name: "    Temp" }
+          - { id: "/ssd/1/data/32", name: "<span style='font-size:11px; color:#9399b2'>D:  Data drive</span>" }
+          - { id: "/ssd/1/level/20", name: "    Health" }
+          - { id: "/ssd/1/temperature/0", name: "    Temp" }
+      callbacks:
+        on_left: "toggle_menu"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
 
   traffic:
     type: "yasb.traffic.TrafficWidget"

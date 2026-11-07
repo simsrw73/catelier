@@ -1,52 +1,34 @@
 /*
- * Catelier — a Catppuccin Mocha theme for YASB
+ * Catelier — a Catppuccin theme for YASB
  * https://github.com/simsrw73/catelier
  *
  * Visual hierarchy (three tiers):
  *   1. primary   — time, focused workspace, active window      → --text
  *   2. secondary — media, controls, status icons               → --subtext0
  *   3. tertiary  — metrics                                     → --overlay0/1
- * Accent colors are used only for state: lavender = focus, peach = something pending,
+ * Accent colors are used only for state: accent = focus, peach = something pending,
  * red = critical threshold.
  *
  * Every numeric label uses the monospace Nerd Font and a min-width so nothing shifts.
  */
 
-:root {
-  /* Catppuccin Mocha */
-  --crust: #11111b;
-  --crust-rgb: 17, 17, 27;
-  --mantle: #181825;
-  --mantle-rgb: 24, 24, 37;
-  --base: #1e1e2e;
-  --base-rgb: 30, 30, 46;
-  --surface0: #313244;
-  --surface0-rgb: 49, 50, 68;
-  --surface1: #45475a;
-  --surface1-rgb: 69, 71, 90;
-  --surface2: #585b70;
-  --overlay0: #6c7086;
-  --overlay0-rgb: 108, 112, 134;
-  --overlay1: #7f849c;
-  --overlay2: #9399b2;
-  --subtext0: #a6adc8;
-  --subtext1: #bac2de;
-  --text: #cdd6f4;
-  --text-rgb: 205, 214, 244;
-  --lavender: #b4befe;
-  --lavender-rgb: 180, 190, 254;
-  --blue: #89b4fa;
-  --mauve: #cba6f7;
-  --green: #a6e3a1;
-  --yellow: #f9e2af;
-  --peach: #fab387;
-  --red: #f38ba8;
-  --red-rgb: 243, 139, 168;
+/* ── Settings ──────────────────────────────────────────────────────────────
+ * Flavor: change the file name to latte, frappe, macchiato or mocha.
+ * (install.ps1 -Flavor does this for you, along with the matching colors in config.yaml.)
+ */
+@import "flavors/mocha.css";
 
-  /* Type */
-  --font-text: "Inter";
-  --font-mono: "JetBrainsMono Nerd Font Mono";
-  --font-icon: "JetBrainsMono Nerd Font Propo";
+:root {
+  /* Accent: any Catppuccin accent name, for example blue, mauve, pink, teal or lavender.
+     Change both lines. */
+  --accent: var(--lavender);
+  --accent-rgb: var(--lavender-rgb);
+
+  /* Fonts: each list falls back to a font that ships with Windows 11 or YASB.
+     Inter is optional; without it, text uses Segoe UI Variable. */
+  --font-text: "Inter", "Segoe UI Variable Text", "Segoe UI";
+  --font-mono: "JetBrainsMono Nerd Font Mono", "JetBrainsMono NFM", "Cascadia Mono", "Consolas";
+  --font-icon: "JetBrainsMono Nerd Font Propo", "JetBrainsMono NFP";
 
   /* Shape */
   --radius-outer: 8px; /* bar + popups (matches Windows 11 "normal" rounded corners) */
@@ -189,7 +171,7 @@
 }
 .komorebi-stack .window.active {
   background-color: var(--crust);
-  border: 1px solid rgba(var(--lavender-rgb), 0.18);
+  border: 1px solid rgba(var(--accent-rgb), 0.18);
 }
 .komorebi-stack .window.active .label {
   color: var(--text);
@@ -221,10 +203,10 @@
   color: var(--subtext0);
 }
 .komorebi-workspaces .ws-btn.active {
-  background-color: rgba(var(--lavender-rgb), 0.18);
+  background-color: rgba(var(--accent-rgb), 0.18);
 }
 .komorebi-workspaces .ws-btn.active .label {
-  color: var(--lavender);
+  color: var(--accent);
   font-weight: 700;
 }
 .komorebi-workspaces .ws-btn:hover {
@@ -290,7 +272,8 @@
 .memory-widget .label,
 .cpu-widget .label,
 .gpu-widget .label,
-.disk-widget .label {
+.disk-widget .label,
+.ssd-health-widget .label {
   min-width: 32px;
 }
 .traffic-widget .label {
@@ -340,7 +323,7 @@
   padding: 0 6px;
 }
 .audio-visualizer-widget .audio-visualizer-canvas {
-  -qproperty-fillbrush: linear-gradient(to top, #b4befe, #f9e2af 50%, #f38ba8);
+  -qproperty-fillbrush: linear-gradient(to top, var(--accent), var(--yellow) 50%, var(--red));
 }
 
 /* ───────────────────────────── Controls ───────────────────────────── */
@@ -447,6 +430,7 @@
 .gpu-popup,
 .traffic-menu,
 .disk-group,
+.libre-menu,
 .clock-popup,
 .komorebi-control-menu,
 .komorebi-layout-menu,
@@ -468,6 +452,7 @@
 .wifi-menu .header,
 .github-menu .header,
 .traffic-menu .header,
+.libre-menu .header,
 .cpu-popup .header,
 .memory-popup .header,
 .gpu-popup .header {
@@ -537,7 +522,7 @@
 .cpu-popup .header .pin-btn.pinned,
 .memory-popup .header .pin-btn.pinned,
 .gpu-popup .header .pin-btn.pinned {
-  color: var(--lavender);
+  color: var(--accent);
 }
 
 /* Right-click / dropdown menus */
@@ -570,7 +555,7 @@
 .context-menu::indicator:checked {
   width: 4px;
   height: 12px;
-  background-color: var(--lavender);
+  background-color: var(--accent);
   border-radius: 2px;
 }
 
@@ -605,12 +590,12 @@
 .cpu-popup .cpu-graph,
 .memory-popup .memory-graph,
 .gpu-popup .gpu-graph {
-  color: #b4befe;
+  color: var(--accent);
 }
 .cpu-popup .cpu-graph-grid,
 .memory-popup .memory-graph-grid,
 .gpu-popup .gpu-graph-grid {
-  color: rgba(205, 214, 244, 0.05);
+  color: rgba(var(--text-rgb), 0.05);
 }
 .cpu-popup .stats,
 .memory-popup .stats,
@@ -761,8 +746,25 @@
   margin-top: 6px;
 }
 .disk-group-label-bar::chunk {
-  background-color: var(--lavender);
+  background-color: var(--accent);
   border-radius: 2px;
+}
+
+/* ── Drives (LibreHardwareMonitor) ──
+   Flat name/value rows; per-drive heading size/colour is inline rich text in config.yaml
+   (install.ps1 -Flavor recolors those too) */
+.libre-menu .sensor-item {
+  min-width: 240px;
+  padding: 1px 14px;
+}
+.libre-menu .sensor-name {
+  font-size: 12px;
+  color: var(--text);
+}
+.libre-menu .sensor-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--overlay1);
 }
 
 /* ── Calendar ── */
@@ -781,8 +783,8 @@
   margin: 0;
 }
 .clock-popup.calendar .calendar-table::item:selected {
-  color: var(--crust);
-  background-color: var(--lavender);
+  color: var(--on-accent);
+  background-color: var(--accent);
   border-radius: 12px;
   font-weight: 700;
 }
@@ -834,8 +836,8 @@
   color: var(--text);
 }
 .komorebi-control-menu .button.active {
-  background-color: rgba(var(--lavender-rgb), 0.2);
-  color: var(--lavender);
+  background-color: rgba(var(--accent-rgb), 0.2);
+  color: var(--accent);
 }
 .komorebi-control-menu .button:disabled,
 .komorebi-control-menu .button.active:disabled {
@@ -924,7 +926,7 @@
 }
 .media-lite-menu .btn.shuffle.active,
 .media-lite-menu .btn.repeat.active {
-  color: var(--lavender);
+  color: var(--accent);
 }
 .media-lite-menu .btn.disabled,
 .media-lite-menu .btn.disabled:hover {
@@ -946,7 +948,7 @@
   border-radius: 2px;
 }
 .media-lite-menu .progress-slider::sub-page {
-  background: var(--lavender);
+  background: var(--accent);
   border-radius: 2px;
 }
 .media-lite-menu .source {
@@ -995,14 +997,14 @@
   margin-left: 12px;
 }
 .bluetooth-menu .header .power-button:checked {
-  background-color: var(--lavender);
-  color: var(--crust);
+  background-color: var(--accent);
+  color: var(--on-accent);
 }
 .bluetooth-menu .progress-bar,
 .wifi-menu .progress-bar {
   min-height: 2px;
   max-height: 2px;
-  color: #b4befe;
+  color: var(--accent);
 }
 .bluetooth-menu .bluetooth-list,
 .wifi-menu .wifi-list {
@@ -1089,7 +1091,7 @@
 }
 .bluetooth-menu .bluetooth-item .connect:hover,
 .wifi-menu .wifi-item .connect:hover {
-  background-color: rgba(var(--lavender-rgb), 0.3);
+  background-color: rgba(var(--accent-rgb), 0.3);
 }
 .wifi-menu .wifi-item .password {
   background-color: rgba(var(--crust-rgb), 0.6);
@@ -1130,7 +1132,7 @@
   color: var(--text);
 }
 .audio-menu .audio-container .device.selected {
-  background-color: rgba(var(--lavender-rgb), 0.16);
+  background-color: rgba(var(--accent-rgb), 0.16);
   color: var(--text);
 }
 .audio-menu .system-volume-container {
@@ -1231,9 +1233,9 @@
   background-color: rgba(var(--surface1-rgb), 0.7);
 }
 .control-center-menu .section.quick-actions .button.active .icon {
-  background-color: var(--lavender);
-  border: 1px solid var(--lavender);
-  color: var(--crust);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--on-accent);
 }
 .control-center-menu .section.quick-actions .button .title {
   font-size: 11px;
@@ -1344,7 +1346,7 @@
   padding: 0 12px 0 0;
 }
 .github-menu .contents .item.new .icon {
-  color: var(--lavender);
+  color: var(--accent);
 }
 .github-menu .footer .label {
   font-size: 12px;
@@ -1365,7 +1367,7 @@
   background-color: rgba(var(--surface1-rgb), 0.6);
 }
 .systray-popup .button.drag-over {
-  background-color: rgba(var(--lavender-rgb), 0.25);
+  background-color: rgba(var(--accent-rgb), 0.25);
 }
 
 /* ── Power menu (compact popup) ── */
@@ -1384,8 +1386,8 @@
 .power-menu-compact .profile-info .profile-account-type {
   font-size: 11px;
   font-weight: 600;
-  color: var(--crust);
-  background-color: var(--lavender);
+  color: var(--on-accent);
+  background-color: var(--accent);
   border-radius: var(--radius-item);
   padding: 2px 8px;
   margin-top: 8px;
@@ -1471,7 +1473,7 @@
   border-radius: var(--radius-outer);
 }
 .launchpad .search-input:focus {
-  border: 1px solid var(--lavender);
+  border: 1px solid var(--accent);
   background-color: rgba(var(--crust-rgb), 0.8);
 }
 
@@ -1499,8 +1501,8 @@
 }
 .launchpad .app-icon:focus,
 .launchpad .group-icon:focus {
-  background-color: rgba(var(--lavender-rgb), 0.08);
-  border: 2px solid var(--lavender);
+  background-color: rgba(var(--accent-rgb), 0.08);
+  border: 2px solid var(--accent);
 }
 .launchpad .app-icon .icon {
   padding: 0;
@@ -1536,7 +1538,7 @@
 
 .launchpad .drop-overlay {
   background-color: rgba(var(--crust-rgb), 0.85);
-  border: 3px dashed var(--lavender);
+  border: 3px dashed var(--accent);
   border-radius: var(--radius-outer);
 }
 .launchpad .drop-overlay .text {
@@ -1572,7 +1574,7 @@
 .launchpad .app-dialog .path-field:focus,
 .launchpad .app-dialog .icon-field:focus,
 .launchpad .app-dialog .group-field:focus {
-  border: 1px solid var(--lavender);
+  border: 1px solid var(--accent);
 }
 .launchpad .app-dialog .buttons-container {
   background-color: rgba(var(--crust-rgb), 0.5);
@@ -1600,12 +1602,12 @@
 }
 .launchpad .app-dialog .button.add,
 .launchpad .app-dialog .button.save {
-  background-color: var(--lavender);
-  color: var(--crust);
+  background-color: var(--accent);
+  color: var(--on-accent);
 }
 .launchpad .app-dialog .button.delete {
   background-color: var(--red);
-  color: var(--crust);
+  color: var(--on-accent);
 }
 .launchpad .app-dialog .warning-message {
   background-color: rgba(var(--red-rgb), 0.12);

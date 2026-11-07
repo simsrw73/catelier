@@ -1,6 +1,8 @@
 # Catelier
 
-A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows, built on the [Catppuccin Mocha](https://catppuccin.com/) palette and made for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager.
+A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows, built on the [Catppuccin](https://catppuccin.com/) palettes and made for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager.
+
+It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and needs no fonts beyond the one YASB installs for you.
 
 This is not an official Catppuccin port.
 
@@ -10,9 +12,9 @@ This is not an official Catppuccin port.
 
 - **A floating top bar of pills.** Widgets are grouped into rounded pills: launcher, window manager, active window, clock, media, system metrics, controls, status and power.
 - **Three levels of emphasis.** The time, focused workspace and active window title use the brightest text. Media, controls and status icons are a step dimmer. Metrics are dimmest, so they're there when you look and quiet when you don't.
-- **Color means state.** Lavender marks focus, peach marks something waiting for you (GitHub notifications), and red marks a critical reading or the power button. Everything else is neutral.
+- **Color means state.** The accent color (lavender by default) marks focus, peach marks something waiting for you (GitHub notifications), and red marks a critical reading or the power button. Everything else is neutral.
 - **Nothing on the bar changes width.** Numbers use a monospace font with fixed minimum widths, and details open in popups instead of swapping labels.
-- **One look for every popup.** Calendar, CPU, memory, GPU, network, disk, Wi-Fi, Bluetooth, volume, media, control center, GitHub, system tray and power menu all share the same surfaces, spacing and buttons.
+- **One look for every popup.** Calendar, CPU, memory, GPU, network, disk, drive health, Wi-Fi, Bluetooth, volume, media, control center, GitHub, system tray and power menu all share the same surfaces, spacing and buttons.
 
 On the primary monitor you get the full bar. Other monitors get a slim bar with the launcher, workspaces, active window and clock.
 
@@ -20,27 +22,27 @@ On the primary monitor you get the full bar. Other monitors get a slim bar with 
 
 - [YASB](https://github.com/amnweb/yasb) 2.0.7 or later
 - [komorebi](https://github.com/LGUG2Z/komorebi) for the workspace, layout and stack widgets. Without it they hide themselves and the rest of the bar still works.
-- Fonts:
-  - [Inter](https://rsms.me/inter/) for text
-  - [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads), both the **Mono** and **Propo** variants, for numbers and icons
-  - Segoe Fluent Icons, which comes with Windows 11
-
-You can install the two Nerd Fonts with Scoop:
-
-```powershell
-scoop bucket add nerd-fonts
-scoop install nerd-fonts/JetBrainsMono-NF-Mono nerd-fonts/JetBrainsMono-NF-Propo
-```
+- Fonts: nothing extra. Catelier uses JetBrainsMono Nerd Font, which YASB's setup installs, plus fonts that come with Windows 11 (Segoe UI Variable, Segoe Fluent Icons and Cascadia Mono). If you have [Inter](https://rsms.me/inter/), text uses it; otherwise it falls back to Segoe UI Variable.
+- Optional: [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for the drive health widget. See [Drive health](#drive-health).
 
 ## Install
 
-Run this in PowerShell:
+Run this in PowerShell to install the default, Mocha with a lavender accent:
 
 ```powershell
 irm https://raw.githubusercontent.com/simsrw73/catelier/main/install.ps1 | iex
 ```
 
-The script copies `config.yaml` and `styles.css` into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up any existing files first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`.
+To choose a flavor and accent, pass `-Flavor` and `-Accent`:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/simsrw73/catelier/main/install.ps1))) -Flavor macchiato -Accent mauve
+```
+
+- `-Flavor`: `latte`, `frappe`, `macchiato` or `mocha` (default)
+- `-Accent`: any of the 14 Catppuccin accents: `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue` or `lavender` (default)
+
+The script copies `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up your existing `config.yaml` and `styles.css` first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`. Run it again any time to switch flavor or accent.
 
 To keep your own `config.yaml` and only take the styles, clone the repository and run:
 
@@ -50,14 +52,36 @@ To keep your own `config.yaml` and only take the styles, clone the repository an
 
 Only the widgets in Catelier's config are styled, so you may need to adjust class names in your own config.
 
-To install by hand, copy `config.yaml` and `styles.css` into your YASB config folder and restart YASB.
+To install by hand, copy `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder and restart YASB.
 
 ## Customize
 
-- **Disk:** the disk widget shows drive `C`. To list more drives in its popup, add them to `volume_labels` under the `disk` widget in `config.yaml`, for example `["C", "D"]`.
+### Flavor and accent by hand
+
+The installer does this for you. To do it yourself:
+
+1. In `styles.css`, change the file name in `@import "flavors/mocha.css";` to `latte.css`, `frappe.css` or `macchiato.css`.
+2. In `config.yaml`, a few popup colors are written as Mocha hex values. Replace each with the same color from your flavor's file in `flavors/`: `#313244` is `surface0`, `#9399b2` is `overlay2` and `#fab387` is `peach`. For Latte, also change every `dark_mode: true` to `dark_mode: false`.
+3. For a different accent, change both `--accent` lines near the top of `styles.css`, for example to `var(--blue)` and `var(--blue-rgb)`.
+
+### Fonts
+
+Change `--font-text`, `--font-mono` and `--font-icon` at the top of `styles.css`. Each is a list, and YASB uses the first font in it that's installed.
+
+### Drive health
+
+The drive health widget reads SSD health and drive temperatures from LibreHardwareMonitor. Without it, the widget shows `--`. To set it up:
+
+1. Run LibreHardwareMonitor as administrator, and turn on **Options → Remote Web Server → Run**.
+2. Open <http://localhost:8085/data.json> and find the `SensorId` values for your drives, such as `/nvme/0/temperature/0`. Each sensor in `data.json` has a `Text` name, so look for the health or life value and the temperatures.
+3. In `config.yaml`, under `ssd_health`, set `sensor_id` to the sensor shown on the bar, and edit the `sensors` list for the popup. The sensor IDs in the theme are placeholders.
+
+If you don't want the widget, remove `"ssd_health"` from the `metrics` group in `config.yaml`.
+
+### Other widgets
+
+- **Disk:** the disk widget shows drive `C`. To list more drives in its popup, add them to `volume_labels` under the `disk` widget, for example `["C", "D"]`.
 - **GitHub:** the GitHub widget signs in with OAuth the first time you open it. It's hidden until you have unread notifications.
-- **Colors:** every color is a variable at the top of `styles.css`. A few popup border colors are set in `config.yaml` as `border_color: "#313244"` (Catppuccin `surface0`).
-- **Fonts:** change `--font-text`, `--font-mono` and `--font-icon` at the top of `styles.css`.
 
 ## Credits
 

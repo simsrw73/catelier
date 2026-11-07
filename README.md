@@ -12,9 +12,11 @@ This is not an official Catppuccin port.
 
 - **A floating top bar of pills.** Widgets are grouped into rounded pills: launcher, window manager, active window, clock, media, system metrics, controls, status and power.
 - **Three levels of emphasis.** The time, focused workspace and active window title use the brightest text. Media, controls and status icons are a step dimmer. Metrics are dimmest, so they're there when you look and quiet when you don't.
-- **Color means state.** The accent color (lavender by default) marks focus, peach marks something waiting for you (GitHub notifications), and red marks a critical reading or the power button. Everything else is neutral.
+- **Color means state.** The accent color (lavender by default, mauve in Latte) marks focus, peach marks something waiting for you (GitHub notifications), and red marks a critical reading or the power button. Everything else is neutral.
 - **Nothing on the bar changes width.** Numbers use a monospace font with fixed minimum widths, and details open in popups instead of swapping labels.
 - **One look for every popup.** Calendar, CPU, memory, GPU, network, disk, drive health, Wi-Fi, Bluetooth, volume, media, control center, GitHub, system tray and power menu all share the same surfaces, spacing and buttons.
+
+**Latte is adjusted for contrast.** Catppuccin's dim grays are too faint on a light background, so in Latte the bar and popups use the lightest shades and each text level is one step darker. Colors still come only from the Catppuccin palette.
 
 On the primary monitor you get the full bar. Other monitors get a slim bar with the launcher, workspaces, active window and clock.
 
@@ -40,7 +42,7 @@ To choose a flavor and accent, pass `-Flavor` and `-Accent`:
 ```
 
 - `-Flavor`: `latte`, `frappe`, `macchiato` or `mocha` (default)
-- `-Accent`: any of the 14 Catppuccin accents: `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue` or `lavender` (default)
+- `-Accent`: any of the 14 Catppuccin accents: `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue` or `lavender`. Without it you get the flavor's default: lavender, or mauve in Latte, where lavender is too pale to read.
 
 The script copies `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up your existing `config.yaml` and `styles.css` first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`. Run it again any time to switch flavor or accent.
 
@@ -61,8 +63,8 @@ To install by hand, copy `config.yaml`, `styles.css` and the `flavors` folder in
 The installer does this for you. To do it yourself:
 
 1. In `styles.css`, change the file name in `@import "flavors/mocha.css";` to `latte.css`, `frappe.css` or `macchiato.css`.
-2. In `config.yaml`, a few popup colors are written as Mocha hex values. Replace each with the same color from your flavor's file in `flavors/`: `#313244` is `surface0`, `#9399b2` is `overlay2` and `#fab387` is `peach`. For Latte, also change every `dark_mode: true` to `dark_mode: false`.
-3. For a different accent, change both `--accent` lines near the top of `styles.css`, for example to `var(--blue)` and `var(--blue-rgb)`.
+2. In `config.yaml`, a few popup colors are written as Mocha hex values. Replace each with the same color from your flavor's file in `flavors/`: `#313244` is `surface0`, `#9399b2` is `overlay2` (use `subtext0` in Latte) and `#fab387` is `peach`. For Latte, also change every `dark_mode: true` to `dark_mode: false`.
+3. For a different accent, change both `--accent` lines near the top of `styles.css`, for example to `var(--blue)` and `var(--blue-rgb)`. `var(--flavor-accent)` and `var(--flavor-accent-rgb)` give the flavor's default.
 
 ### Fonts
 

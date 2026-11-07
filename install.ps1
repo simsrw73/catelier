@@ -20,7 +20,8 @@
     Catppuccin flavor: latte, frappe, macchiato or mocha (the default).
 
 .PARAMETER Accent
-    Catppuccin accent color used for focus and selection. The default is lavender.
+    Catppuccin accent color used for focus and selection. The default is the
+    flavor's own: lavender in the dark flavors, mauve in Latte.
 
 .PARAMETER StylesOnly
     Install styles.css and the flavors folder only, and keep your current config.yaml.
@@ -30,9 +31,9 @@ param(
     [ValidateSet('latte', 'frappe', 'macchiato', 'mocha')]
     [string]$Flavor = 'mocha',
 
-    [ValidateSet('rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
+    [ValidateSet('default', 'rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
         'yellow', 'green', 'teal', 'sky', 'sapphire', 'blue', 'lavender')]
-    [string]$Accent = 'lavender',
+    [string]$Accent = 'default',
 
     [switch]$StylesOnly
 )
@@ -86,12 +87,15 @@ Write-Host "Installed flavors\ ($($flavors -join ', '))"
 # styles.css: pick the flavor and accent
 $styles = Get-ThemeFile 'styles.css'
 $styles = $styles -replace '@import "flavors/[a-z]+\.css";', "@import `"flavors/$Flavor.css`";"
-$styles = $styles -replace '--accent: var\(--[a-z]+\);', "--accent: var(--$Accent);"
-$styles = $styles -replace '--accent-rgb: var\(--[a-z]+-rgb\);', "--accent-rgb: var(--$Accent-rgb);"
+$accentVar = if ($Accent -eq 'default') { 'flavor-accent' } else { $Accent }
+$styles = $styles -replace '--accent: var\(--[a-z-]+\);', "--accent: var(--$accentVar);"
+$styles = $styles -replace '--accent-rgb: var\(--[a-z-]+\);', "--accent-rgb: var(--$accentVar-rgb);"
 Write-ThemeFile 'styles.css' $styles
 
 # config.yaml: a few popup borders and labels are colors in the config, written in
-# Mocha. Swap each one for the same-named color in the chosen flavor.
+# Mocha. Swap each one for the same-named color in the chosen flavor. The drive
+# popup headings (#9399b2, Mocha overlay2) are muted text, so they follow the
+# flavor's --fg-muted role instead, which Latte maps to a darker shade.
 if (-not $StylesOnly) {
     $config = Get-ThemeFile 'config.yaml'
     if ($Flavor -ne 'mocha') {
@@ -99,6 +103,8 @@ if (-not $StylesOnly) {
         $to = Get-Palette $flavorCss[$Flavor]
         $map = @{}
         foreach ($name in $from.Keys) { $map[$from[$name]] = $to[$name] }
+        $muted = [regex]::Match($flavorCss[$Flavor], '--fg-muted:\s*var\(--([a-z0-9]+)\)').Groups[1].Value
+        if ($muted) { $map[$from['overlay2']] = $to[$muted] }
         # One pass, so a swapped color is never swapped again
         $config = [regex]::Replace($config, '#[0-9a-fA-F]{6}\b', {
                 param($m)
@@ -113,5 +119,6 @@ if (-not $StylesOnly) {
 }
 
 Write-Host ''
-Write-Host "Done: Catppuccin $Flavor with a $Accent accent."
+$accentName = if ($Accent -eq 'default') { "its default" } else { "a $Accent" }
+Write-Host "Done: Catppuccin $Flavor with $accentName accent."
 Write-Host 'YASB reloads on its own if watch_config is on; otherwise restart it.'

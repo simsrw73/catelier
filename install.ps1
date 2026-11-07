@@ -21,7 +21,7 @@
 
 .PARAMETER Accent
     Catppuccin accent color used for focus and selection. The default is the
-    flavor's own: lavender in the dark flavors, mauve in Latte.
+    flavor's own, which is mauve.
 
 .PARAMETER Translucency
     How much of the desktop shows through the bar: off (the default), subtle,

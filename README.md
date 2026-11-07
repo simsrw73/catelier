@@ -4,7 +4,9 @@ A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on W
 
 It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and optional translucency.
 
-This is not an official Catppuccin port.
+The name is Catppuccin plus *atelier*, French for an artist's studio. This is not an official Catppuccin port.
+
+![A desktop with Catelier's bar along the top, a code editor and a terminal tiled below it, and the media popup open](images/media.png)
 
 ![The Catelier bar: launcher and window manager pills on the left, the clock in the center, and media, metrics, controls, status and power pills on the right](images/catelier.png)
 
@@ -15,6 +17,12 @@ This is not an official Catppuccin port.
 - **Color means state.** The accent color (mauve by default) marks focus, peach marks something waiting for you (GitHub notifications), and red marks a critical reading or the power button. Everything else is neutral.
 - **Nothing on the bar changes width.** Numbers use a monospace font with fixed minimum widths, and details open in popups instead of swapping labels.
 - **One look for every popup.** Calendar, CPU, memory, GPU, network, disk, drive health, Wi-Fi, Bluetooth, volume, media, control center, GitHub, system tray and power menu all share the same surfaces, spacing and buttons.
+
+<p>
+  <img src="images/ccal.png" height="200" alt="The calendar popup: the day and date on the left, the month grid on the right with today in mauve">
+  <img src="images/ccpu.png" height="200" alt="The CPU popup: a usage graph above four stat cards for usage, frequency, cores and max frequency">
+  <img src="images/cctrl.png" height="200" alt="The control center: quick action buttons, volume, microphone and brightness sliders, and power plan and mode">
+</p>
 
 **Latte is adjusted for contrast.** Catppuccin's dim grays are too faint on a light background, so in Latte the bar and popups use the lightest shades and each text level is one step darker. Colors still come only from the Catppuccin palette.
 

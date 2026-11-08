@@ -1,6 +1,6 @@
 # Catelier
 
-A theme for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows, built on the [Catppuccin](https://catppuccin.com/) palettes and set up for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager. It also styles [GlazeWM](https://github.com/glzr-io/glazewm), if you prefer that.
+A quiet command center for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows: compact, orderly and information-rich, with enough restraint to stay out of your way while you work. It's built on the [Catppuccin](https://catppuccin.com/) palettes and set up for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager. It also styles [GlazeWM](https://github.com/glzr-io/glazewm), if you prefer that.
 
 It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and optional translucency.
 
@@ -11,6 +11,8 @@ The name is Catppuccin plus *atelier*, French for an artist's studio. This is no
 ![The Catelier bar: launcher and window manager pills on the left, the clock in the center, and media, metrics, controls, status and power pills on the right](images/catelier.png)
 
 ## Design
+
+Important information is brighter and heavier so it catches your eye; everything else is quieter and recedes. Related information and controls sit together, so the bar is quick to scan.
 
 - **A floating top bar of pills.** Widgets are grouped into rounded pills: launcher, window manager, active window, clock, media, system metrics, controls, status and power.
 - **Three levels of emphasis.** The time, focused workspace and active window title use the brightest text. Media, controls and status icons are a step dimmer. Metrics are dimmest, so they're there when you look and quiet when you don't.

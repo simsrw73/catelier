@@ -29,6 +29,11 @@
 
 .PARAMETER StylesOnly
     Install styles.css and the flavors folder only, and keep your current config.yaml.
+
+.PARAMETER InstallFont
+    If JetBrainsMono Nerd Font is missing, install it with winget without asking.
+    Without this switch the script asks first. Windows asks for administrator
+    approval, because the font installs for all users.
 #>
 [CmdletBinding()]
 param(
@@ -42,7 +47,9 @@ param(
     [ValidateSet('off', 'subtle', 'medium', 'strong')]
     [string]$Translucency = 'off',
 
-    [switch]$StylesOnly
+    [switch]$StylesOnly,
+
+    [switch]$InstallFont
 )
 
 $ErrorActionPreference = 'Stop'
@@ -79,6 +86,52 @@ function Write-ThemeFile([string]$Name, [string]$Content) {
     }
     [IO.File]::WriteAllText($dest, $Content, [Text.UTF8Encoding]::new($false))
     Write-Host "Installed $Name"
+}
+
+# True when the icon font (JetBrainsMono Nerd Font Propo) is installed, for this
+# user or for all users.
+function Test-NerdFont {
+    $keys = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts',
+    'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
+    foreach ($key in $keys) {
+        $props = Get-ItemProperty $key -ErrorAction SilentlyContinue
+        if (-not $props) { continue }
+        foreach ($p in $props.PSObject.Properties) {
+            if ($p.Name -match '^JetBrainsMono (NFP|Nerd Font Propo)\b') { return $true }
+        }
+    }
+    return $false
+}
+
+# Checks for the Nerd Font, and installs it with winget if the user agrees (or
+# passed -InstallFont). Returns $true when the font was installed just now.
+function Install-NerdFont {
+    if (Test-NerdFont) { return $false }
+    $fontUrl = 'https://www.nerdfonts.com/font-downloads'
+    Write-Host ''
+    Write-Warning 'JetBrainsMono Nerd Font is not installed. Without it, the bar shows boxes instead of icons.'
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Host "Download JetBrainsMono from $fontUrl and install the fonts in the zip."
+        return $false
+    }
+    if (-not $InstallFont) {
+        # Read-Host throws in a non-interactive shell; treat that as "no".
+        try { $answer = Read-Host 'Install it now with winget? [Y/n]' } catch { $answer = 'n' }
+        if ($answer -and $answer -notmatch '^(y|yes)$') {
+            Write-Host "Skipped. Install it later with: winget install --id DEVCOM.JetBrainsMonoNerdFont"
+            Write-Host "or download JetBrainsMono from $fontUrl"
+            return $false
+        }
+    }
+    Write-Host 'Installing JetBrainsMono Nerd Font (Windows asks for administrator approval)...'
+    winget install --id DEVCOM.JetBrainsMonoNerdFont --exact --source winget `
+        --accept-package-agreements --accept-source-agreements | Out-Host
+    if ($LASTEXITCODE -ne 0 -and -not (Test-NerdFont)) {
+        Write-Warning "winget couldn't install the font (exit code $LASTEXITCODE). Download JetBrainsMono from $fontUrl"
+        return $false
+    }
+    Write-Host 'Installed JetBrainsMono Nerd Font'
+    return $true
 }
 
 New-Item -ItemType Directory -Force -Path (Join-Path $target 'flavors') | Out-Null
@@ -128,8 +181,14 @@ if (-not $StylesOnly) {
     Write-ThemeFile 'config.yaml' $config
 }
 
+$fontInstalled = Install-NerdFont
+
 Write-Host ''
 $accentName = if ($Accent -eq 'default') { "its default" } else { "a $Accent" }
 $glassName = if ($Translucency -eq 'off') { 'a solid bar' } else { "$Translucency translucency" }
 Write-Host "Done: Catppuccin $Flavor with $accentName accent and $glassName."
-Write-Host 'YASB reloads on its own if watch_config is on; otherwise restart it.'
+if ($fontInstalled) {
+    Write-Host 'Restart YASB so it picks up the new font.'
+} else {
+    Write-Host 'YASB reloads on its own if watch_config is on; otherwise restart it.'
+}

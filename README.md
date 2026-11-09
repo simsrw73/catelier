@@ -34,7 +34,7 @@ On the primary monitor you get the full bar. Other monitors get a slim bar with 
 
 - [YASB](https://github.com/amnweb/yasb) 2.0.7 or later
 - [komorebi](https://github.com/LGUG2Z/komorebi) for the workspace, layout and stack widgets. Without it they hide themselves and the rest of the bar still works. To use [GlazeWM](https://github.com/glzr-io/glazewm) instead, see [Using GlazeWM](#using-glazewm).
-- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) for the icons and numbers. YASB doesn't install it. Download it from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip) and install the fonts in the zip, or use `winget install DEVCOM.JetBrainsMonoNerdFont`. Without it, icons show as boxes.
+- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) for the icons and numbers. YASB doesn't install it. Download it from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip) and install the fonts in the zip, or use `winget install DEVCOM.JetBrainsMonoNerdFont`. The install script offers to install it for you. Without it, icons show as boxes.
 - Other fonts come with Windows 11 (Segoe UI Variable, Segoe Fluent Icons and Cascadia Mono). If you have [Inter](https://rsms.me/inter/), text uses it; otherwise it falls back to Segoe UI Variable.
 - Optional: [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for the drive health widget. See [Drive health](#drive-health).
 
@@ -57,6 +57,8 @@ To choose a flavor, accent or translucency, pass `-Flavor`, `-Accent` or `-Trans
 - `-Translucency`: `off` (default), `subtle`, `medium` or `strong`. How much of the blurred desktop shows through the bar. See [Translucency](#translucency).
 
 The script copies `config.yaml`, `styles.css` and the `flavors` folder into your YASB config folder (`%YASB_CONFIG_HOME%`, or `%USERPROFILE%\.config\yasb` if that isn't set). It backs up your existing `config.yaml` and `styles.css` first, as `config.yaml.<timestamp>.bak` and `styles.css.<timestamp>.bak`. Run it again any time to switch flavor, accent or translucency.
+
+If JetBrainsMono Nerd Font isn't installed, the script asks whether to install it with winget. Windows then asks for administrator approval, because the font installs for all users. Pass `-InstallFont` to install it without the question. Restart YASB afterwards so it picks up the font.
 
 To keep your own `config.yaml` and only take the styles, clone the repository and run:
 

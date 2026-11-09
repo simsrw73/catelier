@@ -1,14 +1,14 @@
 # Catelier
 
+![The Catelier bar: launcher and window manager pills on the left, the clock in the center, and media, metrics, controls, status and power pills on the right](images/catelier.png)
+
 A quiet command center for [YASB](https://github.com/amnweb/yasb) (Yet Another Status Bar) on Windows: compact, orderly and information-rich, with enough restraint to stay out of your way while you work. It's built on the [Catppuccin](https://catppuccin.com/) palettes and set up for the [komorebi](https://github.com/LGUG2Z/komorebi) tiling window manager. It also styles [GlazeWM](https://github.com/glzr-io/glazewm), if you prefer that.
 
 It comes in all four flavors (Latte, Frappé, Macchiato and Mocha) with your choice of accent color, and optional translucency.
 
+![A desktop with Catelier's bar along the top, a code editor and a terminal tiled below it, and the media popup open](images/desktop.png)
+
 The name is Catppuccin plus *atelier*, French for an artist's studio. This is not an official Catppuccin port.
-
-![A desktop with Catelier's bar along the top, a code editor and a terminal tiled below it, and the media popup open](images/media.png)
-
-![The Catelier bar: launcher and window manager pills on the left, the clock in the center, and media, metrics, controls, status and power pills on the right](images/catelier.png)
 
 ## Design
 
@@ -34,7 +34,8 @@ On the primary monitor you get the full bar. Other monitors get a slim bar with 
 
 - [YASB](https://github.com/amnweb/yasb) 2.0.7 or later
 - [komorebi](https://github.com/LGUG2Z/komorebi) for the workspace, layout and stack widgets. Without it they hide themselves and the rest of the bar still works. To use [GlazeWM](https://github.com/glzr-io/glazewm) instead, see [Using GlazeWM](#using-glazewm).
-- Fonts: nothing extra. Catelier uses JetBrainsMono Nerd Font, which YASB's setup installs, plus fonts that come with Windows 11 (Segoe UI Variable, Segoe Fluent Icons and Cascadia Mono). If you have [Inter](https://rsms.me/inter/), text uses it; otherwise it falls back to Segoe UI Variable.
+- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) for the icons and numbers. YASB doesn't install it. Download it from the [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip) and install the fonts in the zip, or use `winget install DEVCOM.JetBrainsMonoNerdFont`. Without it, icons show as boxes.
+- Other fonts come with Windows 11 (Segoe UI Variable, Segoe Fluent Icons and Cascadia Mono). If you have [Inter](https://rsms.me/inter/), text uses it; otherwise it falls back to Segoe UI Variable.
 - Optional: [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for the drive health widget. See [Drive health](#drive-health).
 
 ## Install
